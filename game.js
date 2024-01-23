@@ -1,16 +1,26 @@
+const rockButton = document.getElementById('rock');
+const paperButton = document.getElementById('paper');
+const scissorsButton = document.getElementById('scissors');
+
+const result = document.getElementById('result');
+const finalResult = document.getElementById('final');
+
+let playerScore = 0;
+let computerScore = 0;
+let ties = 0;
+
+let gameContinues = true;
+
 function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-// Get a computer choice (Rock, Paper, or Scissors)
 function getComputerChoice() {
     const choices = ['rock', 'paper', 'scissors'];
     return choices[Math.floor(Math.random() * choices.length)];
 }
 
-// Play a single round of Rock Paper Scissors
 function playRound(playerSelection, computerSelection) {
-    playerSelection = playerSelection.toLowerCase();
     if (playerSelection === computerSelection) {
         return "It's a tie!";
     } else if (
@@ -23,34 +33,57 @@ function playRound(playerSelection, computerSelection) {
         return "You lose! " + capitalize(computerSelection) + " beats " + capitalize(playerSelection) + ".";
     }
 }
-  
-// Play a best-of-five game where we account for TIES by re-playing the round
-function game() {
-    let playerScore = 0;
-    let computerScore = 0;
-    let i = 0;
-    while (i < 5) {
-        const playerSelection = prompt("Enter your choice (Rock, Paper, or Scissors):");
-        const computerSelection = getComputerChoice();
-        const result = playRound(playerSelection, computerSelection);
-        console.log(result);
-        if (result.startsWith("You win!")) {
-            playerScore++;
-            i++;
-        } else if (result.startsWith("You lose!")) {
-            computerScore++;
-            i++;
-        } else {
-            i;
-        }
-    }
-    if (playerScore > computerScore) {
-        console.log("You win the game!");
-    } else if (computerScore > playerScore) {
-        console.log("You lose the game!");
+
+function outcomeAndTally(playerSelection) {
+    let outcome = playRound(playerSelection, getComputerChoice());
+    result.innerHTML = outcome;
+    if (outcome.startsWith("You win!")) {
+        playerScore++;
+    } else if (outcome.startsWith("You lose!")) {
+        computerScore++;
     } else {
-        console.log("The game is a tie!");
+        ties++;
+    }
+
+    if (playerScore === 5 || computerScore === 5) {
+        gameContinues = false;
     }
 }
 
-game();
+const buttonHandler = (playerSelection) => {
+    // the game is played, the outcome is determined and the scores are tallied
+    outcomeAndTally(playerSelection);
+    displayScores();
+    // game loop until player/computer have won 5 times
+    if (!gameContinues) {
+        displayFinalResults();
+    }
+}
+
+const rockButtonHandler = () => buttonHandler('rock');
+const paperButtonHandler = () => buttonHandler('paper');
+const scissorsButtonHandler = () => buttonHandler('scissors');
+
+function displayScores() {
+    document.getElementById('playerScore').innerHTML = playerScore;
+    document.getElementById('computerScore').innerHTML = computerScore;
+    document.getElementById('ties').innerHTML = ties;
+}
+
+function displayFinalResults() {
+    if (playerScore === 5) {
+        finalResult.innerHTML = "You won the game! Congratulations!";
+    } else {
+        finalResult.innerHTML = "You lost the game! Better luck next time!";
+    }
+
+    rockButton.removeEventListener('click', rockButtonHandler);
+    paperButton.removeEventListener('click', paperButtonHandler);
+    scissorsButton.removeEventListener('click', scissorsButtonHandler);
+}
+
+if (gameContinues) {
+    rockButton.addEventListener('click', rockButtonHandler);
+    paperButton.addEventListener('click', paperButtonHandler);
+    scissorsButton.addEventListener('click', scissorsButtonHandler);
+}
