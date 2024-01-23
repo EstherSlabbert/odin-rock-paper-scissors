@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="game.js"></script>
-    <title>Rock, Paper, Scissors</title>
-</head>
-<body>
-      <h1>Rock, Paper, Scissors</h1>
+  <head>
+    <title>Home</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <script type="module" src="game.js"></script>
+  </head>
+  <body>
+    <main>
+      <h1>Five Victories to Conquer: Rock, Paper, Scissors Showdown</h1>
+    </main>
       <h2>Player choice:</h2>
       <div class="buttons">
         <button class="button" id="rock">Rock</button>
         <button class="button" id="paper">Paper</button>
         <button class="button" id="scissors">Scissors</button> 
       </div>
-    <p>See Console for outcomes</p>
-</body>
+      <h2>Round Result:</h2>
+      <h2 id="result"></h2>
+      <h2>Score Tallies:</h2>
+      <h3>Your score is <span id="playerScore">0</span>.</h3>
+      <h3>Opponent's score is <span id="computerScore">0</span></h3>
+      <h3>Number of ties is <span id="ties">0</span></h3>
+      <h1 id="final"></h1>
+  </body>
 </html>
